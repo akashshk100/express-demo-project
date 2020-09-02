@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <script >
+            
+            function getWeatherData(){
+                console.log('akash')
+                let location = document.getElementsByName("location")[0].value;
+                let url = 'http://localhost:3000/weather?address='+location
+                console.log(url)
+                fetch(url).then((response) => {
+                    response.json().then((weatherData) => {
+                        if(weatherData.error){
+                            document.getElementById("error-alert").innerText = weatherData.error
+                            document.getElementById("alert").hidden = false
+                            document.getElementById("weather-card").hidden = true
+                        }
+                        else{
+                            document.getElementById("weather-image").src = weatherData.weather_icon
+                            document.getElementById("weather-location").innerText = weatherData.location
+                            document.getElementById("temperature").innerText = weatherData.temperature+"°C,  "
+                            document.getElementById("description").innerText = weatherData.weather_description
+                            document.getElementById("wind-speed").innerText = "wind-speed: "+weatherData.wind_speed
+                            document.getElementById("humidity").innerText = "humidity: "+weatherData.humidity
+                            document.getElementById("weather-card").hidden = false
+                            document.getElementById("alert").hidden = true
+                        }
+                        
+                    })
+                })
+                
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container mt-2">
+            {{>header}}
+            <hr>
+            <div class="row ml-3">
+                <div class="col-10 p-1">
+                    <input type="text" class="form-control" placeholder="Location" name="location">
+                </div>
+                <div class="col-2 p-1">
+                    <button class="btn btn-secondary" onclick="getWeatherData()">Search</button>
+                </div>  
+            </div>
+            
+            <div class="row ml-3 mt-4">
+                <div class="card" id="weather-card" style=" margin-left: 200px; width: 600px;" hidden>
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="" class="card-img" id="weather-image">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title" id="weather-location">Card title</h5>
+                                <span class="card-text p-2" id="temperature"></span><span class="card-text p-2" id="description"></span>
+                                <br>
+                                <span class="card-text p-2" id="humidity"></span><span class="card-text p-2" id="wind-speed"></span>
+                                <br>
+                                <br>
+                                <br>
+                                <p class="card-text p-2"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-danger" id="alert" role="alert" style=" margin-left: 200px;" hidden>
+                    <span id="error-alert"></span>
+                </div>
+            </div>
+
+            {{>footer}}
+        </div>
+    </body>
+</html>
