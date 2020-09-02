@@ -6,7 +6,7 @@
             function getWeatherData(){
                 console.log('akash')
                 let location = document.getElementsByName("location")[0].value;
-                let url = 'http://localhost:3000/weather?address='+location
+                let url = '/weather?address='+location
                 console.log(url)
                 fetch(url).then((response) => {
                     response.json().then((weatherData) => {
